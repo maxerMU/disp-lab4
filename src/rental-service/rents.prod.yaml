@@ -1,0 +1,11 @@
+Server:
+        Port: 8060
+
+DB_Rents:
+        DB_NAME: "rentals"
+        DB_USER: "rents_db_user"
+        DB_USER_PASSWORD: "ekUzi6WyT6zyb1Qn719V36aWW6nZm7M1"
+        DB_HOST: "dpg-ckr7f2o5vl2c73b6cu30-a.frankfurt-postgres.render.com"
+        DB_PORT: 5432
+
+LogFile: "stdout"
