@@ -16,16 +16,16 @@ Clients:
 #         Port: 8050
 
 Cars:
-        Host: "cars-service.onrender.com"
-        Port: 443
+        Host: "cars-service"
+        Port: 8070
 
 Rents:
-        Host: "rental-service-zych.onrender.com"
-        Port: 443
+        Host: "rental-service"
+        Port: 8060
 
 Payments:
-        Host: "payment-service-m2fp.onrender.com"
-        Port: 443
+        Host: "payments-service"
+        Port: 8050
 
 Server:
         Port: 8080

@@ -1,0 +1,23 @@
+# Default values for cars_system.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+gateway:
+  service:
+    image: maxermu/api-gateway:latest
+    port: 8080
+
+rental:
+  service:
+    image: maxermu/rental-service:latest
+    port: 8060
+
+payments:
+  service:
+    image: maxermu/payments-service:latest
+    port: 8050
+
+cars:
+  service:
+    image: maxermu/cars-service:latest
+    port: 8070
