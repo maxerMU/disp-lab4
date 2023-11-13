@@ -27,7 +27,6 @@ jobs:
         env:
           KUBECONFIG: /tmp/config
         run: |
-          cat /tmp/config
           source ~/vk-cloud-solutions/path.bash.inc
           helm upgrade --install postgres ./kubernetes/postgres
       
