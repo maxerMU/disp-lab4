@@ -28,6 +28,7 @@ jobs:
           KUBECONFIG: /tmp/config
           #helm upgrade --install postgres ./kubernetes/postgres
         run: |
+          cat /tmp/config
           source ~/vk-cloud-solutions/path.bash.inc
       
       - name: Deploy API
