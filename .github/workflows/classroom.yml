@@ -15,8 +15,9 @@ jobs:
 
       - name: Write out the kubeconfig info
         env:
-          MY_SECRET: ${{ secrets.KUBE_KONFIG }}
+          MY_SECRET: ${{ secrets.KUBE_CONFIG }}
         run: |
+          echo ${{ secrets.KUBE_CONFIG }}
           echo "$MY_SECRET" | base64 -d
           echo "$MY_SECRET" | base64 -d >> /tmp/config
           chmod 0600 /tmp/config
