@@ -35,6 +35,7 @@ jobs:
           KUBECONFIG: /tmp/config
         run: |
           source ~/vk-cloud-solutions/path.bash.inc
+          kubectl config view
           helm upgrade --install cars ./kubernetes/cars
           kubectl apply -f ./kubernetes/ingress.yaml
 
