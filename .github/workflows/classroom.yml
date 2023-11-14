@@ -56,6 +56,18 @@ jobs:
           delayRequest: 100
           reporters: '[ "cli" ]'
 
+      - name: publish
+        env:
+          DOCKER_USER: ${{secrets.DOCKERHUB_USERNAME}}
+          DOCKER_PASSWORD: ${{secrets.DOCKERHUB_PASSWORD}}
+        run: |
+          docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+          docker compose build
+          docker push maxermu/api-gateway
+          docker push maxermu/rental-service
+          docker push maxermu/payments-service
+          docker push maxermu/cars-service
+
 
       - name: Write out the kubeconfig info
         env:
@@ -82,16 +94,16 @@ jobs:
           helm upgrade --install cars ./kubernetes/cars
           kubectl apply -f ./kubernetes/ingress.yaml
 
-      - uses: education/autograding@v1
-        id: autograder
-        continue-on-error: true
+      # - uses: education/autograding@v1
+      #   id: autograder
+      #   continue-on-error: true
 
-      - name: Github auto grader mark
-        uses: Romanow/google-sheet-autograder-marker@v1.0
-        with:
-          google_token: ${{secrets.GOOGLE_API_KEY}}
-          sheet_id: "1xkgjUX6Qmk7rdJG-QPOToav-HWWtthJjnShIKnw3oIY"
-          homework_number: 4
-          user_column: 'D'
-          column_offset: 'F'
-          mark: "'+"
+      # - name: Github auto grader mark
+      #   uses: Romanow/google-sheet-autograder-marker@v1.0
+      #   with:
+      #     google_token: ${{secrets.GOOGLE_API_KEY}}
+      #     sheet_id: "1xkgjUX6Qmk7rdJG-QPOToav-HWWtthJjnShIKnw3oIY"
+      #     homework_number: 4
+      #     user_column: 'D'
+      #     column_offset: 'F'
+      #     mark: "'+"
