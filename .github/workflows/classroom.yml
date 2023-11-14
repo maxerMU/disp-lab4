@@ -13,6 +13,48 @@ jobs:
 
       - uses: docker/setup-buildx-action@v2
 
+      - name: Build images
+        timeout-minutes: 10
+        run: |
+          docker-compose build postgres
+          docker-compose build api-gateway
+          docker-compose build rental-service
+          docker-compose build payments-service
+          docker-compose build cars-service
+      - name: Setup db
+        run: |
+          docker-compose up -d postgres
+          docker-compose logs postgres
+          sleep 5
+          cd postgres
+          ./30-create_test_database.sh
+          cd ..
+
+      - name: Run containers
+        timeout-minutes: 10
+        run: |
+          docker-compose up -d rental-service
+          docker-compose up -d payments-service
+          docker-compose up -d cars-service
+          docker-compose up -d api-gateway
+
+          docker-compose logs rental-service
+          docker-compose logs payments-service
+          docker-compose logs cars-service
+          docker-compose logs api-gateway
+          ./scripts/wait-script.sh
+        env:
+          WAIT_PORTS: 8080,8070,8060,8050
+
+      - name: Run API Tests
+        uses: matt-ball/newman-action@master
+        with:
+          collection: v3/postman/collection.json
+          environment: v3/postman/environment.json
+          delayRequest: 100
+          reporters: '[ "cli" ]'
+
+
       - name: Write out the kubeconfig info
         env:
           MY_SECRET: ${{ secrets.KUBE_CONFIG }}
@@ -38,23 +80,6 @@ jobs:
           kubectl config view
           helm upgrade --install cars ./kubernetes/cars
           kubectl apply -f ./kubernetes/ingress.yaml
-
-
-      - name: Update /etc/hosts
-        run: sudo echo "${{ secrets.KUBE_IP }} maxermu.disp.com" | sudo tee -a /etc/hosts
-
-      - name: Wait 60s
-        uses: jakejarvis/wait-action@master
-        with:
-          time: '60s'
-
-      - name: Run API Tests
-        uses: matt-ball/newman-action@master
-        with:
-          collection: v3/postman/collection.json
-          environment: v3/postman/environment.json
-          delayRequest: 100
-          reporters: '[ "cli" ]'
 
       - uses: education/autograding@v1
         id: autograder
