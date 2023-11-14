@@ -43,6 +43,11 @@ jobs:
       - name: Update /etc/hosts
         run: sudo echo "${{ secrets.KUBE_IP }} maxermu.disp.com" | sudo tee -a /etc/hosts
 
+      - name: Wait 120s
+        uses: jakejarvis/wait-action@master
+        with:
+          time: '120s'
+
       - name: Run API Tests
         uses: matt-ball/newman-action@master
         with:
